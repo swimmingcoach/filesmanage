@@ -37,9 +37,11 @@
 	});
 	function getFile() {
 		$("#img").removeAttr("src");
+		$("#img").hide();
 		var filePath = $("#filePath").val();
 		var url = "./file.web?action=getPic&filePath=" + filePath;
 		$("#img").attr('src', url);
+		$("#img").show();
 	}
 
 	function menuChange(index) {
@@ -79,7 +81,7 @@
 				</div>
 			</div>
 			<div class="image">
-				<img id="img" src="" />
+				<img id="img" src="" style="display: none;" />
 			</div>
 		</div>
 		<div id="imgUpload" style="display: none;">

@@ -20,6 +20,11 @@ body {
 
 #imgShow .image {
 	margin: 20px auto;
+	max-width: 800px;
+}
+
+#imgShow .image #img {
+	width: 100%;
 }
 
 #imgUpload .tools {
