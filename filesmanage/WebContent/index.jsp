@@ -6,7 +6,7 @@
 <title>图片查看/上传</title>
 <meta charset="UTF-8" />
 <meta name="robots" content="none">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 <link href="resources/bootstrap-3.3.7/css/bootstrap.min.css"
