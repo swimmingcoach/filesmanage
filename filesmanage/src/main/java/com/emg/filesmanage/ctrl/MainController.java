@@ -17,6 +17,7 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
@@ -31,9 +32,11 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 @Controller
 @RequestMapping("/file.web")
 public class MainController {
-	private static final String ROOTPATH = "D:\\images\\";
-
+	
 	private static final Logger logger = LoggerFactory.getLogger(MainController.class);
+	
+	@Value("${rootPath}")
+	private String rootPath;
 
 	/**
 	 * 获取图片
@@ -53,7 +56,7 @@ public class MainController {
 		OutputStream outputStream = null;
 		InputStream inputStream = null;
 		try {
-			Path path = Paths.get(ROOTPATH, filePath);
+			Path path = Paths.get(rootPath, filePath);
 			response.setContentType("image/*");
 			inputStream = new BufferedInputStream(new FileInputStream(path.toString()));
 			outputStream = response.getOutputStream();
@@ -101,7 +104,7 @@ public class MainController {
 			MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
 			Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
 
-			Path path = Paths.get(ROOTPATH, filePath);
+			Path path = Paths.get(rootPath, filePath);
 
 			if (!path.toFile().exists()) {
 				path.toFile().mkdir();
