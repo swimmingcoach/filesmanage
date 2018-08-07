@@ -9,8 +9,6 @@
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
 		http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm.xsd">
 
-	<beans:import resource="./spring-ehcache.xml" />
-	
 	<tx:annotation-driven transaction-manager="transactionManagerPro" />
 
 	<!-- DispatcherServlet Context: defines this servlet's request-processing 

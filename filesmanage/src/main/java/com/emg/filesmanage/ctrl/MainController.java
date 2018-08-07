@@ -33,8 +33,7 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 public class MainController {
 	private static final String ROOTPATH = "D:\\images\\";
 
-	private static final Logger logger = LoggerFactory
-			.getLogger(MainController.class);
+	private static final Logger logger = LoggerFactory.getLogger(MainController.class);
 
 	/**
 	 * 获取图片
@@ -47,19 +46,16 @@ public class MainController {
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.GET, params = "action=getPic")
-	private ModelAndView getPic(Model model, HttpSession session,
-			HttpServletRequest request, HttpServletResponse response,
-			@RequestParam("filePath") String filePath) {
-		logger.debug("MainController-getPic start: " + filePath);
-		ModelAndView modelAndView = new ModelAndView(
-				new MappingJackson2JsonView());
+	private ModelAndView getPic(Model model, HttpSession session, HttpServletRequest request,
+			HttpServletResponse response, @RequestParam("filePath") String filePath) {
+		logger.debug("START: " + filePath);
+		ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
 		OutputStream outputStream = null;
 		InputStream inputStream = null;
 		try {
 			Path path = Paths.get(ROOTPATH, filePath);
 			response.setContentType("image/*");
-			inputStream = new BufferedInputStream(new FileInputStream(
-					path.toString()));
+			inputStream = new BufferedInputStream(new FileInputStream(path.toString()));
 			outputStream = response.getOutputStream();
 
 			int len = 0;
@@ -68,26 +64,26 @@ public class MainController {
 				outputStream.write(buf, 0, len);
 			}
 		} catch (FileNotFoundException e) {
-			logger.error(e.getMessage());
+			logger.error(e.getMessage(), e);
 		} catch (Exception e) {
-			logger.error(e.getMessage());
+			logger.error(e.getMessage(), e);
 		} finally {
 			if (outputStream != null) {
 				try {
 					outputStream.close();
 				} catch (IOException e) {
-					e.printStackTrace();
+					logger.error(e.getMessage(), e);
 				}
 			}
 			if (inputStream != null) {
 				try {
 					inputStream.close();
 				} catch (IOException e) {
-					e.printStackTrace();
+					logger.error(e.getMessage(), e);
 				}
 			}
 		}
-		logger.debug("MainController-getPic end: " + filePath);
+		logger.debug("END: " + filePath);
 		return modelAndView;
 	}
 
@@ -97,18 +93,16 @@ public class MainController {
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.POST, params = "action=uploadPic")
-	private ModelAndView uploadPic(Model model, HttpSession session,
-			HttpServletRequest request, HttpServletResponse response,
-			@RequestParam("filePath") String filePath) {
-		logger.debug("MainController-uploadPic start.");
-		ModelAndView modelAndView = new ModelAndView(
-				new MappingJackson2JsonView());
+	private ModelAndView uploadPic(Model model, HttpSession session, HttpServletRequest request,
+			HttpServletResponse response, @RequestParam("filePath") String filePath) {
+		logger.debug("START: " + filePath);
+		ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
 		try {
 			MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
 			Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
-			
+
 			Path path = Paths.get(ROOTPATH, filePath);
-			
+
 			if (!path.toFile().exists()) {
 				path.toFile().mkdir();
 			}
@@ -116,15 +110,14 @@ public class MainController {
 			for (Map.Entry<String, MultipartFile> entity : fileMap.entrySet()) {
 				MultipartFile mf = entity.getValue();
 				String fileName = mf.getOriginalFilename();
-				logger.debug("MainController-uploadPic doing: " + fileName);
+				logger.debug("DOING: " + fileName);
 				File uploadFile = Paths.get(path.toString(), fileName).toFile();
 				FileCopyUtils.copy(mf.getBytes(), uploadFile);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			logger.error(e.getMessage());
+			logger.error(e.getMessage(), e);
 		}
-		logger.debug("MainController-uploadPic end.");
+		logger.debug("END: " + filePath);
 		return modelAndView;
 	}
 }
